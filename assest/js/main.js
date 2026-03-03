@@ -73,95 +73,95 @@ const jobs = [
     description: 'Develop iOS applications.',
   },
   {
-  id: 9,
-  company: 'Netflix',
-  position: 'UI/UX Designer',
-  location: 'Los Angeles',
-  type: 'Full-time',
-  salary: '$6800',
-  description: 'Design user-friendly streaming interfaces.',
-},
-{
-  id: 10,
-  company: 'Intel',
-  position: 'Hardware Engineer',
-  location: 'California',
-  type: 'Full-time',
-  salary: '$7500',
-  description: 'Develop next-gen semiconductor hardware.',
-},
-{
-  id: 11,
-  company: 'IBM',
-  position: 'AI Engineer',
-  location: 'New York',
-  type: 'Remote',
-  salary: '$8200',
-  description: 'Build machine learning models and AI solutions.',
-},
-{
-  id: 12,
-  company: 'Oracle',
-  position: 'Database Administrator',
-  location: 'Texas',
-  type: 'Full-time',
-  salary: '$6300',
-  description: 'Manage enterprise database systems.',
-},
-{
-  id: 13,
-  company: 'Spotify',
-  position: 'Mobile App Developer',
-  location: 'Stockholm',
-  type: 'Remote',
-  salary: '$7000',
-  description: 'Develop music streaming mobile applications.',
-},
-{
-  id: 14,
-  company: 'Adobe',
-  position: 'Software Tester',
-  location: 'San Jose',
-  type: 'Full-time',
-  salary: '$5600',
-  description: 'Test and ensure software quality and performance.',
-},
-{
-  id: 15,
-  company: 'Uber',
-  position: 'Full Stack Developer',
-  location: 'San Francisco',
-  type: 'Full-time',
-  salary: '$7800',
-  description: 'Develop web and backend systems for ride services.',
-},
-{
-  id: 16,
-  company: 'TikTok',
-  position: 'Content Moderation Engineer',
-  location: 'Singapore',
-  type: 'Remote',
-  salary: '$6100',
-  description: 'Build tools to detect harmful content automatically.',
-},
-{
-  id: 17,
-  company: 'SpaceX',
-  position: 'Aerospace Software Engineer',
-  location: 'Florida',
-  type: 'Full-time',
-  salary: '$9000',
-  description: 'Develop flight control software for rockets.',
-},
-{
-  id: 18,
-  company: 'Dell',
-  position: 'System Engineer',
-  location: 'India',
-  type: 'Full-time',
-  salary: '$5800',
-  description: 'Maintain enterprise IT infrastructure systems.',
-},
+    id: 9,
+    company: 'Netflix',
+    position: 'UI/UX Designer',
+    location: 'Los Angeles',
+    type: 'Full-time',
+    salary: '$6800',
+    description: 'Design user-friendly streaming interfaces.',
+  },
+  {
+    id: 10,
+    company: 'Intel',
+    position: 'Hardware Engineer',
+    location: 'California',
+    type: 'Full-time',
+    salary: '$7500',
+    description: 'Develop next-gen semiconductor hardware.',
+  },
+  {
+    id: 11,
+    company: 'IBM',
+    position: 'AI Engineer',
+    location: 'New York',
+    type: 'Remote',
+    salary: '$8200',
+    description: 'Build machine learning models and AI solutions.',
+  },
+  {
+    id: 12,
+    company: 'Oracle',
+    position: 'Database Administrator',
+    location: 'Texas',
+    type: 'Full-time',
+    salary: '$6300',
+    description: 'Manage enterprise database systems.',
+  },
+  {
+    id: 13,
+    company: 'Spotify',
+    position: 'Mobile App Developer',
+    location: 'Stockholm',
+    type: 'Remote',
+    salary: '$7000',
+    description: 'Develop music streaming mobile applications.',
+  },
+  {
+    id: 14,
+    company: 'Adobe',
+    position: 'Software Tester',
+    location: 'San Jose',
+    type: 'Full-time',
+    salary: '$5600',
+    description: 'Test and ensure software quality and performance.',
+  },
+  {
+    id: 15,
+    company: 'Uber',
+    position: 'Full Stack Developer',
+    location: 'San Francisco',
+    type: 'Full-time',
+    salary: '$7800',
+    description: 'Develop web and backend systems for ride services.',
+  },
+  {
+    id: 16,
+    company: 'TikTok',
+    position: 'Content Moderation Engineer',
+    location: 'Singapore',
+    type: 'Remote',
+    salary: '$6100',
+    description: 'Build tools to detect harmful content automatically.',
+  },
+  {
+    id: 17,
+    company: 'SpaceX',
+    position: 'Aerospace Software Engineer',
+    location: 'Florida',
+    type: 'Full-time',
+    salary: '$9000',
+    description: 'Develop flight control software for rockets.',
+  },
+  {
+    id: 18,
+    company: 'Dell',
+    position: 'System Engineer',
+    location: 'India',
+    type: 'Full-time',
+    salary: '$5800',
+    description: 'Maintain enterprise IT infrastructure systems.',
+  },
 ];
 
 // job status
@@ -186,15 +186,14 @@ function renderJobs() {
   //   return jobStatus[job.id] === currentTab;
   // });
   let filtered = jobs.filter((job) => {
+    // ALL TAB → show only jobs that have NO status
+    if (currentTab === 'all') {
+      return !jobStatus[job.id];
+    }
 
-  // ALL TAB → show only jobs that have NO status
-  if (currentTab === 'all') {
-    return !jobStatus[job.id];
-  }
-
-  // Interview or Rejected tab
-  return jobStatus[job.id] === currentTab;
-});
+    // Interview or Rejected tab
+    return jobStatus[job.id] === currentTab;
+  });
 
   // empty state to show no jobs
   emptyState.classList.toggle('hidden', filtered.length !== 0);
@@ -218,7 +217,15 @@ function renderJobs() {
   <p class="text-sm"><b>Location:</b> ${job.location}</p>
   <p class="text-sm"><b>Type:</b> ${job.type}</p>
   <p class="text-sm"><b>Salary:</b> ${job.salary}</p>
-  <p class="text-sm bg-base-200 w-[100px] p-2 rounded-md text-[#002C5C] font-normal"><b>Not Applied</b> </p>
+<p class="text-sm w-[120px] text-center p-2 rounded-md font-normal ${
+      jobStatus[job.id] === 'interview'
+        ? 'bg-green-100 text-green-600'
+        : jobStatus[job.id] === 'rejected'
+          ? 'bg-red-100 text-red-600'
+          : 'bg-base-200 text-[#002C5C]'
+    }">
+<b>${jobStatus[job.id] ? jobStatus[job.id].toUpperCase() : 'NOT APPLIED'}</b>
+</p>
   <p class="text-xs mt-2 text-gray-500">${job.description}</p>
 
   <!-- Buttons -->

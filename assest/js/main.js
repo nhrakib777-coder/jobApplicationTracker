@@ -181,10 +181,20 @@ function renderJobs() {
   container.innerHTML = '';
 
   // filter the jobs
+  // let filtered = jobs.filter((job) => {
+  //   if (currentTab === 'all') return true;
+  //   return jobStatus[job.id] === currentTab;
+  // });
   let filtered = jobs.filter((job) => {
-    if (currentTab === 'all') return true;
-    return jobStatus[job.id] === currentTab;
-  });
+
+  // ALL TAB → show only jobs that have NO status
+  if (currentTab === 'all') {
+    return !jobStatus[job.id];
+  }
+
+  // Interview or Rejected tab
+  return jobStatus[job.id] === currentTab;
+});
 
   // empty state to show no jobs
   emptyState.classList.toggle('hidden', filtered.length !== 0);
